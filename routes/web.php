@@ -146,6 +146,16 @@ Route::get('/login', function () {
     return view('login');
 })->name('login');
 
+Route::get('/login-user', function () {
+    return view('login-user');
+})->name('login-user');
+Route::get('/register', function () {
+    return view('register');
+})->name('register');
+Route::get('/forget', function () {
+    return view('forget');
+})->name('forget');
+
 Route::post('/act_login', [AdminController::class, 'authenticate'])->name('post.login');
 Route::get('/logout', [AdminController::class, 'logout'])->name('logout');
 

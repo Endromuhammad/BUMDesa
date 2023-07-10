@@ -9,7 +9,7 @@
 
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 
 	</head>
 	<body>
@@ -37,11 +37,11 @@
 									</label>
 								</div>
 								<div class="w-50 text-md-right">
-									<a href="#">Forgot Password</a>
+									<a href="{{ route('forget') }}">Forgot Password</a>
 								</div>
 					</div>
 					<div class="register">
-							<a href="#">Register</a>
+							<a href="{{ route('register') }}">Register</a>
 					</div>
 	            <div class="form-group">
 	            	<button type="submit" class="btn btn-primary rounded submit p-3 px-5">Login</button>

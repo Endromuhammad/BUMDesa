@@ -62,7 +62,7 @@
               </li>
             </ul>
           </li>
-         
+          <li><a class="nav-link scrollto" href="{{ route('login-user') }}">Login</a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle d-none"></i>
       </nav><!-- .navbar -->
