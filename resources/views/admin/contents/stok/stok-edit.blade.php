@@ -10,23 +10,23 @@
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h4 class="header-title mb-0">Edit Portofolio</h4>
+                        <h4 class="header-title mb-0">Edit Barang</h4>
                     </div>
                     <div>
-                        <form action=" {{ route('portofolio-update', $portofolio->id) }}" method="POST" enctype="multipart/form-data">
+                        <form action=" {{ route('stok-update', $barang->id) }}" method="POST" enctype="multipart/form-data">
                             <br>
                             <div class="mb-3">
-                                <label for="formjudul" class="form-label">Id</label>
-                                <input type="text" name="title" class="form-control" id="exampleFormControlInput1" placeholder="Nama Barang">
+                                <label for="formjudul" class="form-label">Nama Barang</label>
+                                <input type="text" name="name" class="form-control" id="exampleFormControlInput1" value="{{ $barang->name }}" placeholder="Nama Barang">
                             </div>
                             <div class="mb-3">
-                                <label for="formjudul" class="form-label">Nama Barang</label>
-                                <input type="text" name="title" class="form-control" id="exampleFormControlInput1" placeholder="Nama Barang">
+                                <label for="formjudul" class="form-label">Harga Barang</label>
+                                <input type="number" name="price" class="form-control" id="exampleFormControlInput1" value="{{ $barang->price }}" placeholder="Harga Barang">
                             </div>
 
                             <div class="mb-3">
                                 <label for="formjudul" class="form-label">Stok Barang</label>
-                                <input type="text" name="title" class="form-control" id="exampleFormControlInput1" placeholder="Stok Barang">
+                                <input type="number" name="qty" class="form-control" id="exampleFormControlInput1" value="{{ $barang->qty }}" placeholder="Stok Barang">
                             </div>
 
                             <input type="submit" class="btn btn-warning float-right mt-3" value="Update">
