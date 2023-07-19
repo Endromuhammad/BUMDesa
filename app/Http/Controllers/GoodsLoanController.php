@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Barang;
 use App\Models\GoodsLoan;
 use App\Models\GoodsLoanDetails;
+use App\Models\Status;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class GoodsLoanController extends Controller
@@ -16,7 +18,7 @@ class GoodsLoanController extends Controller
      */
     public function index()
     {
-        $loans = GoodsLoan::all();
+        $loans = GoodsLoan::getAllTransactionStatus();
 
         $page = "layanan-peminjaman";
         return view('admin.contents.goods-loan.layanan-peminjaman', ['page' => $page, 'loans' => $loans]);
@@ -52,6 +54,7 @@ class GoodsLoanController extends Controller
         ]);
         
         $barang     = $request->post('barang');
+        $qty        = $request->post('qty');
         $start_date = $request->post('start_date');
         $end_date   = $request->post('end_date');
 
@@ -76,6 +79,8 @@ class GoodsLoanController extends Controller
             'end_date'          => $end_date,
             'total_price'       => $total_price,
             'ktp_path'          => $path_ktp,
+            'created_by'        => Auth::id(),
+            'status'            => Status::getStatusSubmit()
         );
 
         $create = GoodsLoan::create($loanData);
@@ -90,17 +95,19 @@ class GoodsLoanController extends Controller
             $barang = array($barang);
         }
 
-        $detail_barang = Barang::whereIn('id', $barang)->get();
+        foreach ($barang as $key => $value) {
+            $detail_barang = Barang::find($value);
+            $qty_barang     = isset($qty[$key]) ? $qty[$key] : 0;
 
-        foreach ($detail_barang as $barang) {
             $loanDetail = array(
-                'barang_id'     => $barang->id,
-                'price'         => $barang->price,
+                'barang_id'     => $detail_barang->id,
+                'price'         => $detail_barang->price,
+                'qty'           => $qty_barang,
                 'goods_loan_id' => $goods_loan_id
             );
 
             $createDetail = GoodsLoanDetails::create($loanDetail);
-            $total_price += $barang->price;
+            $total_price += ($detail_barang->price * $qty_barang);
         }
 
         $date1      = new DateTime($start_date);
@@ -187,6 +194,7 @@ class GoodsLoanController extends Controller
         $loan->nik              = $request->post('nik');
         $loan->start_date       = $start_date;
         $loan->end_date         = $end_date;
+        $loan->status           = $request->post('status');
 
         $detail_barang  = GoodsLoanDetails::where('goods_loan_id', $goodsLoanId)->delete();
 

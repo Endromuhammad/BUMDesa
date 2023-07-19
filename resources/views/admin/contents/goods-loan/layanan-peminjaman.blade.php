@@ -20,6 +20,7 @@
                                 <th scope="col">Nama</th>
                                 <th scope="col">Total Peminjaman</th>
                                 <th scope="col">Total Barang</th>
+                                <th scope="col">Status</th>
                                 <th scope="col">Action</th>
                               </tr>
                             </thead>
@@ -31,10 +32,13 @@
                                   <td>{{ $loan->name }}</td>
                                   <td>{{ number_format($loan->total_price) }}</td>
                                   <td>{{ number_format($loan->total_price) }}</td>
+                                  <td>{{ $loan->description }}</td>
                                   <td>
                                     <a href="{{ route('layanan_peminjaman-view', $loan->id) }}" class="btn btn-xs btn-primary"><i class="bi bi-eye"></i></a>
-                                    <a href="{{ route('layanan_peminjaman-edit', $loan->id) }}" class="btn btn-xs btn-warning"><i class="bi bi-pencil"></i></a>
-                                    <a href="{{ route('layanan_peminjaman-delete', $loan->id) }}" class="btn btn-xs btn-success"><i class="bi-check-square"></i></a>
+                                    @if (! in_array($loan->status, array(5,0)))
+                                      <a href="{{ route('layanan_peminjaman-edit', $loan->id) }}" class="btn btn-xs btn-warning"><i class="bi bi-pencil"></i></a>
+                                    @endif
+                                    {{-- <a href="{{ route('layanan_peminjaman-delete', $loan->id) }}" class="btn btn-xs btn-success"><i class="bi-check-square"></i></a> --}}
                                   </td>
                                 </tr>
                               @endforeach

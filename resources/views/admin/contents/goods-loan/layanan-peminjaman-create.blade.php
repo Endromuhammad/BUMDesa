@@ -95,7 +95,8 @@
         }
         
         var input       = "<div class='row' id='barang-" + barangId + "'>";
-        input           += "<div class='col-md-11 mt-2'><input type='text' id='barang-" + barangId + "' class='form-control' value='" + barangName + "' disabled></div>";
+        input           += "<div class='col-md-9 mt-2'><input type='text' id='barang-" + barangId + "' class='form-control' value='" + barangName + "' disabled></div>";
+        input           += "<div class='col-md-2 mt-2'><input type='number' placeholder='Qty' id='qty-" + barangId + "' name='qty[]' class='form-control'></div>";
         input           += "<div class='col-md-1 mt-2'><a href='#!' class='btn btn-sm btn-danger' onclick='deleteBarang(" + barangId + ")'>X</a></div>";
         input           += "<input type='hidden' name='barang[]' value='" + barangId + "'>";
         input           += "</div>";
