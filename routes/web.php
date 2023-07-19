@@ -147,8 +147,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::get('/stok', [BarangController::class, 'index'])->name('stok');
     Route::get('/stok/view/{id}', [BarangController::class, 'show'])->name('stok-view');
     Route::get('/stok/edit/{id}', [BarangController::class, 'edit'])->name('stok-edit');
+    Route::post('/stok/update/{id}', [BarangController::class, 'update'])->name('stok-update');
     Route::get('/stok/create', [BarangController::class, 'create'])->name('stok-create');
     Route::post('/stok/store', [BarangController::class, 'store'])->name('stok-store');
+    Route::get('/stok/delete/{id}', [BarangController::class, 'destroy'])->name('stok-delete');
 });
 
 Route::get('/login', function () {

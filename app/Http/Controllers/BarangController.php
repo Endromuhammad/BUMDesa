@@ -59,7 +59,10 @@ class BarangController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $barang = Barang::find($id);
+        $page = "stok";
+        
+        return view('admin.contents.stok.stok-view', ['page' => $page, 'barang' => $barang]);
     }
 
     /**
@@ -67,7 +70,11 @@ class BarangController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $barang = Barang::find($id);
+        $page = "stok";
+
+        
+        return view('admin.contents.stok.stok-edit', ['page' => $page, 'barang' => $barang]);
     }
 
     /**
@@ -75,7 +82,18 @@ class BarangController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $barang = Barang::find($id);
+
+        $barang->name        = $request->post('name');
+        $barang->price  = $request->post('price');
+        $barang->qty     = $request->post('qty');
+
+        if (! $barang->save() ) {
+            echo "error update";
+            exit;
+        }
+
+        return redirect()->route('stok');
     }
 
     /**
@@ -83,6 +101,12 @@ class BarangController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $barang = Barang::find($id);
+
+        if (! $barang->delete() ) {
+            echo "delete failed";
+        }
+
+        return redirect()->route('stok');
     }
 }

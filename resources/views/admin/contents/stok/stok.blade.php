@@ -17,6 +17,7 @@
                               <tr>
                                 <th scope="col">ID</th>
                                 <th scope="col">Nama Barang</th>
+                                <th scope="col">Harga</th>
                                 <th scope="col">Stok</th>
                                 <th scope="col">Action</th>
                               </tr>
@@ -26,10 +27,12 @@
                               <tr>
                                 <th scope="row">{{ $key+1 }}</th>
                                 <td>{{ $barang->name }}</td>
+                                <td>{{ number_format($barang->price) }}</td>
                                 <td>{{ $barang->qty }}</td>
                                 <td>
                                   <a href="{{ route('stok-view', $barang->id) }}" class="btn btn-xs btn-primary"><i class="bi bi-eye"></i></a>
                                   <a href="{{ route('stok-edit', $barang->id) }}" class="btn btn-xs btn-warning"><i class="bi bi-pencil"></i></a>
+                                  <a href="{{ route('stok-delete', $barang->id) }}" class="btn btn-xs btn-danger"><i class="bi bi-trash"></i></a>
                                 </td>
                               </tr>
                               @endforeach
