@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\News;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
+use Symfony\Component\VarDumper\VarDumper;
 
 class adminController extends Controller
 {
@@ -20,6 +22,12 @@ class adminController extends Controller
             'email'     => ['required', 'email'],
             'password'  => ['required']
         ]);
+
+        /** role validation */
+        $user = User::where(['email' => $request->email])->first();
+        if ($user->role != 1) {
+            return redirect('login');
+        }
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
