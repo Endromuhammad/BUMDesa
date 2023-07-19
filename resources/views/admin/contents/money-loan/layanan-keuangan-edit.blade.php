@@ -67,8 +67,6 @@
                                     @elseif (in_array($loan->status, array(2)))
                                         <option value="5">Done</option>
                                         <option value="0">Cancel</option>
-                                    @elseif (in_array($loan->status, array(3)))
-                                        <option value="0">Cancel</option>
                                     @endif
                                 </select>
                             </div>

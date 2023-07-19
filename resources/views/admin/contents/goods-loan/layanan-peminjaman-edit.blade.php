@@ -33,7 +33,7 @@
                                 <label for="formjudul" class="form-label">Pilih Barang</label>
                                 <div class="row">
                                     <div class="col-md-11">
-                                        <select class="form-control" id="barang" required>
+                                        <select class="form-control" id="barang">
                                             <option selected disabled value="">Barang yang mau dipinjam</option>
                                             @foreach ($list_barang as $barang)
                                                 <option value="{{ $barang->id }}"> {{ $barang->name }}</option>
@@ -50,8 +50,11 @@
                                     @foreach ($selectedBarang as $barang)
                                         <?php $selectedBarangId[] = $barang->id ?>
                                         <div class='row' id='barang-{{$barang->id}}'>
-                                            <div class='col-md-11 mt-2'>
+                                            <div class='col-md-9 mt-2'>
                                                 <input type='text' id='barang-{{$barang->id}}' class='form-control' value='{{ $barang->name }}' disabled>
+                                            </div>
+                                            <div class='col-md-2 mt-2'>
+                                                <input type='number' name="qty[]" id='qty-{{$barang->id}}' class='form-control' value='{{ $barang->qty_input }}'>
                                             </div>
                                             <div class='col-md-1 mt-2'>
                                                 <a href='#1' class='btn btn-sm btn-danger' onclick='deleteBarang({{ $barang->id }})'>X</a>
@@ -78,6 +81,21 @@
                                 <img src="{{ $loan->ktp_path }}" width="500px">
                                 <input class="form-control" type="file" id="formFile" name="ktp" accept="image/*">
                             </div>
+
+                            <div class="mb-3">
+                                <label for="formFile" class="form-label">Update Status</label> <br />
+                                <select class="form-control" id="barang" name="status" required>
+                                    <option selected disabled value="">Pilih Status</option>
+                                    @if (in_array($loan->status, array(1)))
+                                        <option value="2">Approve</option>
+                                        <option value="3">Reject</option>
+                                    @elseif (in_array($loan->status, array(2)))
+                                        <option value="5">Done</option>
+                                        <option value="0">Cancel</option>
+                                    @endif
+                                </select>
+                            </div>
+
                             <input type="submit" class="btn btn-warning" value="Update">
                         </form>
                     </div>

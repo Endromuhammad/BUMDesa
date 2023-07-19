@@ -13,14 +13,16 @@ class GoodsLoanDetails extends Model
     protected $fillable = [
         'barang_id',
         'price',
-        'goods_loan_id'
+        'goods_loan_id',
+        'qty'
     ];
 
     public static function getDetailSelectedBarang(int $goods_loan_id) : Array {
         $barang = DB::select("SELECT 
         b.`name`,
         b.`price`,
-        b.`id`
+        b.`id`,
+        gld.`qty` as qty_input
         FROM `goods_loan_details` gld
         JOIN barang b ON b.`id` = gld.`barang_id`
         WHERE gld.`goods_loan_id` = $goods_loan_id");

@@ -147,6 +147,12 @@ class LandingPageController extends Controller
         ]);
     }
 
+    public function goodsLoanList () : View {
+        $transactions = GoodsLoan::getUserTransactions();
+        
+        return view('contents.goods-loan-list', ['transactions'   => $transactions]);
+    }
+
     public function goodsLoanStore(Request $request) : RedirectResponse {
         $request->validate([
             'nik'           => ['required'],
@@ -156,11 +162,13 @@ class LandingPageController extends Controller
             'barang'        => ['required'],
             'start_date'    => ['required'],
             'end_date'      => ['required'],
+            'qty'           => ['required']
         ]);
         
         $barang     = $request->post('barang');
         $start_date = $request->post('start_date');
         $end_date   = $request->post('end_date');
+        $qty        = $request->post('qty');
 
         $path   = 'public/images/goods_loans';
 
@@ -183,6 +191,8 @@ class LandingPageController extends Controller
             'end_date'          => $end_date,
             'total_price'       => $total_price,
             'ktp_path'          => $path_ktp,
+            'created_by'        => Auth::id(),
+            'status'            => Status::getStatusSubmit()
         );
 
         $create = GoodsLoan::create($loanData);
@@ -197,17 +207,19 @@ class LandingPageController extends Controller
             $barang = array($barang);
         }
 
-        $detail_barang = Barang::whereIn('id', $barang)->get();
+        foreach ($barang as $key => $value) {
+            $detail_barang = Barang::find($value);
+            $qty_barang     = isset($qty[$key]) ? $qty[$key] : 0;
 
-        foreach ($detail_barang as $barang) {
             $loanDetail = array(
-                'barang_id'     => $barang->id,
-                'price'         => $barang->price,
+                'barang_id'     => $detail_barang->id,
+                'price'         => $detail_barang->price,
+                'qty'           => $qty_barang,
                 'goods_loan_id' => $goods_loan_id
             );
 
             $createDetail = GoodsLoanDetails::create($loanDetail);
-            $total_price += $barang->price;
+            $total_price += ($detail_barang->price * $qty_barang);
         }
 
         $date1      = new DateTime($start_date);
@@ -219,6 +231,6 @@ class LandingPageController extends Controller
         $goodsLoan->total_price = $total_price * $diff;
         $goodsLoan->save();
  
-        return redirect()->route('goods-loan');
+        return redirect()->route('goods-loan-list');
     }
 }

@@ -30,9 +30,23 @@
                                 <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="address" disabled>{{ $loan->address }}</textarea>
                             </div>
                             <div class="mb-3">
-                                <label for="formjudul" class="form-label">Barang</label>
+                                <div class="row">
+                                    <div class="col-10">
+                                        <label for="formjudul" class="form-label">Barang</label>
+                                    </div>
+                                    <div class="col-2">
+                                        <label for="formjudul" class="form-label">Qty</label>
+                                    </div>
+                                </div>
                                 @foreach ($selectedBarang as $barang)
-                                    <input type="text" class="mt-2 form-control" value="{{ $barang->name }}" disabled>
+                                <div class="row">
+                                    <div class="col-10">
+                                        <input type="text" class="mt-2 form-control" value="{{ $barang->name }}" disabled>
+                                    </div>
+                                    <div class="col-2">
+                                        <input type="text" class="mt-2 form-control" value="{{ $barang->qty_input }}" disabled>
+                                    </div>
+                                </div>
                                 @endforeach
                             </div>
 
