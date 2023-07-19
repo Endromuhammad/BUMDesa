@@ -5,6 +5,7 @@ use App\Http\Controllers\LandingPageController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BarangController;
 use App\Http\Controllers\GoodsLoanController;
 use App\Http\Controllers\MoneyLoanController;
 use App\Http\Controllers\PortfolioController;
@@ -143,7 +144,11 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::post('/layanan_peminjaman/update/{id}', [GoodsLoanController::class, 'update'])->name('layanan_peminjaman-update');
     Route::get('/layanan_peminjaman/delete/{id}', [GoodsLoanController::class, 'destroy'])->name('layanan_peminjaman-delete');
 
-    Route::get('/stok', [GoodsLoanController::class, 'index'])->name('stok');
+    Route::get('/stok', [BarangController::class, 'index'])->name('stok');
+    Route::get('/stok/view/{id}', [BarangController::class, 'show'])->name('stok-view');
+    Route::get('/stok/edit/{id}', [BarangController::class, 'edit'])->name('stok-edit');
+    Route::get('/stok/create', [BarangController::class, 'create'])->name('stok-create');
+    Route::post('/stok/store', [BarangController::class, 'store'])->name('stok-store');
 });
 
 Route::get('/login', function () {
