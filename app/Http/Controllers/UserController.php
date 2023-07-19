@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
 use Symfony\Component\VarDumper\VarDumper;
 
@@ -26,28 +27,32 @@ class UserController extends Controller
 
         /** role validation */
         $user = User::where(['nik' => $request->nik])->first();
-        if ($user->role != 0) {
-            return redirect('login');
+        if (!$user || $user->role != 0 || !Hash::check($request->password, $user->password)) {
+            return redirect(route('user.login'));
         }
 
-        $credentials = array(
-            'email'     => $user->email,
-            'password'  => $request->password
-        );
+        Auth::login($user);
+        $request->session()->regenerate();
 
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-
-            return redirect()->intended('');
-        }
-
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ])->onlyInput('email');
+        return redirect()->intended('');
     }
 
-    function register() : View {
-        return view('register');
+    function register() {
+        if( ! Auth::user()){
+            return view('register');
+        } else {
+            return redirect('');
+        }
+    }
+
+    function storeUser(Request $request) {
+        $request->validate([
+            'phone_number'      => ['required'],
+            'nik'               => ['required', 'integer'],
+            'name'              => ['required'],
+            'password'          => ['required'],
+            'confirm_password'  => ['required']
+        ]);
     }
 
     public function logout(Request $request): RedirectResponse

@@ -169,6 +169,7 @@ Route::get('/forget', function () {
 
 Route::post('/user/act_login', [UserController::class, 'authenticate'])->name('user.login.post');
 Route::get('/user/logout', [UserController::class, 'logout'])->name('user.logout');
+Route::post('/user/act_register', [UserController::class, 'storeUser'])->name('user.register.post');
 
 Route::get('/register', [UserController::class, 'register'])->name('register');
 
