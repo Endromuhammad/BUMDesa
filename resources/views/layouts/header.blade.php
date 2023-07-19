@@ -54,15 +54,30 @@
           <li><a class="nav-link scrollto" href="{{ route('profile') }}">Profile</a></li>
           <li><a class="nav-link scrollto" href="{{ route('berita-user') }}">Berita</a></li>
           <li><a class="nav-link scrollto" href="{{ route('portofolio-user') }}">Portfolio</a></li>
-          <li class="dropdown megamenu"><a href="#"><span>Layanan</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+          
+          @if (Auth::user())
+            <li class="dropdown megamenu"><a href="#"><span>Layanan</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+              <ul>
+                <li>
+                  <a href=" {{ route('money-loan') }}">Peminjaman Keuangan</a>
+                  <a href="{{ route('goods-loan') }}">Peminjaman Barang</a>
+                </li>
+              </ul>
+            </li>
+          @endif
+
+          @if (Auth::user())
+          <li class="dropdown megamenu"><a href="#"><span>{{ auth()->user()->name }}</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
             <ul>
               <li>
-                <a href=" {{ route('money-loan') }}">Peminjaman Keuangan</a>
-                <a href="{{ route('goods-loan') }}">Peminjaman Barang</a>
+                <a href=" {{ route('user.logout') }}">Logout</a>
               </li>
             </ul>
           </li>
-          <li><a class="nav-link scrollto" href="{{ route('login-user') }}">Login</a></li>
+          @else
+            <li><a class="nav-link scrollto" href="{{ route('user.login') }}">Login</a></li>
+          @endif
+
         </ul>
         <i class="bi bi-list mobile-nav-toggle d-none"></i>
       </nav><!-- .navbar -->

@@ -8,6 +8,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\GoodsLoanController;
 use App\Http\Controllers\MoneyLoanController;
 use App\Http\Controllers\PortfolioController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -104,6 +105,9 @@ use App\Http\Controllers\PortfolioController;
 //     return view('blog-details');
 // })->name('blog-details');
 
+
+
+/** start admin routes */
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
 
@@ -146,18 +150,27 @@ Route::get('/login', function () {
     return view('login');
 })->name('login');
 
-Route::get('/login-user', function () {
-    return view('login-user');
-})->name('login-user');
-Route::get('/register', function () {
+Route::post('/act_login', [AdminController::class, 'authenticate'])->name('post.login');
+Route::get('/logout', [AdminController::class, 'logout'])->name('logout');
+/** end admin routes */
+
+
+
+/** start basic user routes */
+Route::get('/user/login', [UserController::class, 'login'])->name('user.login');
+
+Route::get('/user/register', function () {
     return view('register');
-})->name('register');
+})->name('user.register');
+
 Route::get('/forget', function () {
     return view('forget');
 })->name('forget');
 
-Route::post('/act_login', [AdminController::class, 'authenticate'])->name('post.login');
-Route::get('/logout', [AdminController::class, 'logout'])->name('logout');
+Route::post('/user/act_login', [UserController::class, 'authenticate'])->name('user.login.post');
+Route::get('/user/logout', [UserController::class, 'logout'])->name('user.logout');
+
+Route::get('/register', [UserController::class, 'register'])->name('register');
 
 Route::get('/', [LandingPageController::class, 'index'])->name('landing-page');
 Route::get('/profile', [LandingPageController::class, 'profile'])->name('profile');
@@ -173,3 +186,4 @@ Route::post('/money-loan/store', [LandingPageController::class, 'moneyLoanStore'
 
 Route::get('/goods-loan', [LandingPageController::class, 'goodsLoan'])->name('goods-loan');
 Route::post('/goods-loan/store', [LandingPageController::class, 'goodsLoanStore'])->name('goods-loan.post');
+/** end basic user routes */
