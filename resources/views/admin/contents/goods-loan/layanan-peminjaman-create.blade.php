@@ -37,7 +37,7 @@
                                         <select class="form-control" id="barang" required>
                                             <option selected disabled value="">Barang yang mau dipinjam</option>
                                             @foreach ($list_barang as $barang)
-                                                <option value="{{ $barang->id }}"> {{ $barang->name }}</option>
+                                                <option value="{{ $barang->id }}" max="{{ $barang->qty }}"> {{ $barang->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -83,6 +83,7 @@
         var barang = document.getElementById("barang");
         var barangId = barang.value;
         var barangName = barang.options[barang.selectedIndex].text;
+        var barangMaxQty = barang.options[barang.selectedIndex].getAttribute('max');
 
         if (barangId == '') {
             alert("Pilih barang terlebih dulu!");
@@ -96,7 +97,7 @@
         
         var input       = "<div class='row' id='barang-" + barangId + "'>";
         input           += "<div class='col-md-9 mt-2'><input type='text' id='barang-" + barangId + "' class='form-control' value='" + barangName + "' disabled></div>";
-        input           += "<div class='col-md-2 mt-2'><input type='number' placeholder='Qty' id='qty-" + barangId + "' name='qty[]' class='form-control'></div>";
+        input           += "<div class='col-md-2 mt-2'><input type='number' placeholder='Qty Max:"+barangMaxQty+"' id='qty-" + barangId + "' name='qty[]' max=" + barangMaxQty + " class='form-control'></div>";
         input           += "<div class='col-md-1 mt-2'><a href='#!' class='btn btn-sm btn-danger' onclick='deleteBarang(" + barangId + ")'>X</a></div>";
         input           += "<input type='hidden' name='barang[]' value='" + barangId + "'>";
         input           += "</div>";

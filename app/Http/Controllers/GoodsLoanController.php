@@ -169,6 +169,7 @@ class GoodsLoanController extends Controller
         $loan       = GoodsLoan::find($goodsLoanId);
 
         $barang     = $request->post('barang');
+        $qty        = $request->post('qty');
         $start_date = $request->post('start_date');
         $end_date   = $request->post('end_date');
         $total_price = 0;
@@ -202,17 +203,33 @@ class GoodsLoanController extends Controller
             $barang = array($barang);
         }
 
-        $detail_barang = Barang::whereIn('id', $barang)->get();
+        foreach ($barang as $key => $value) {
+            $detail_barang = Barang::find($value);
+            $qty_barang     = isset($qty[$key]) ? $qty[$key] : 0;
 
-        foreach ($detail_barang as $barang) {
             $loanDetail = array(
-                'barang_id'     => $barang->id,
-                'price'         => $barang->price,
+                'barang_id'     => $detail_barang->id,
+                'price'         => $detail_barang->price,
+                'qty'           => $qty_barang,
                 'goods_loan_id' => $goodsLoanId
             );
 
             $createDetail = GoodsLoanDetails::create($loanDetail);
-            $total_price += $barang->price;
+            $total_price += ($detail_barang->price * $qty_barang);
+            
+            if ($request->post('status') == Status::getStatusApprove()) { // kalo diapprove ngurangin stok
+                $stock_barang       = $detail_barang->qty;
+                $stock_diambil      = $qty_barang;
+                $current_stock      = $stock_barang - $stock_diambil;
+                $detail_barang->qty = $current_stock;
+                $detail_barang->save();
+            } elseif ($request->post('status') == Status::getStatusDone() || $request->post('status') == Status::getStatusCancel()) { // kalo done atau cancel nambah stok dari stok dipinjam
+                $stock_barang       = $detail_barang->qty;
+                $stock_diambil      = $qty_barang;
+                $current_stock      = $stock_barang + $stock_diambil;
+                $detail_barang->qty = $current_stock;
+                $detail_barang->save();
+            }
         }
 
         $date1      = new DateTime($start_date);
