@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\MoneyLoan;
+use App\Models\Status;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\VarDumper\VarDumper;
 
 class MoneyLoanController extends Controller
 {
@@ -14,7 +16,7 @@ class MoneyLoanController extends Controller
      */
     public function index()
     {
-        $loans = MoneyLoan::all();
+        $loans = MoneyLoan::getAllWithStatus();
 
         $page = "layanan-keuangan";
         return view('admin.contents.money-loan.layanan-keuangan', ['page' => $page, 'loans' => $loans]);
@@ -85,7 +87,8 @@ class MoneyLoanController extends Controller
             'ktp_path'          => $path_ktp,
             'holding_ktp_path'  => $path_ktp_holding,
             'kk_path'           => $path_kk,
-            'created_by'        => Auth::id()
+            'created_by'        => Auth::id(),
+            'status'            => Status::getStatusSubmit()
         );
 
         $create = MoneyLoan::create($loanData);
@@ -180,6 +183,7 @@ class MoneyLoanController extends Controller
         $loan->nominal      = $request->post('nominal');
         $loan->tenor        = $request->post('tenor');
         $loan->monthly_fee  = $request->post('monthly_fee');
+        $loan->status       = $request->post('status');
 
         if ($path_ktp) {
             $loan->ktp_path = $path_ktp;

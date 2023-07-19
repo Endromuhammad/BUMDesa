@@ -32,11 +32,13 @@
                                   <td>{{ $loan->name }}</td>
                                   <td>{{ $loan->nominal }}</td>
                                   <td>{{ $loan->tenor }}</td>
-                                  <td>Masih diproses</td>
+                                  <td>{{ $loan->description }}</td>
                                   <td>
                                     <a href="{{ route('layanan_keuangan-view', $loan->id) }}" class="btn btn-xs btn-primary"><i class="bi bi-eye"></i></a>
-                                    <a href="{{ route('layanan_keuangan-edit', $loan->id) }}" class="btn btn-xs btn-warning"><i class="bi bi-pencil"></i></a>
-                                    <a href="{{ route('layanan_keuangan-delete', $loan->id) }}" class="btn btn-xs btn-danger"><i class="bi bi-trash"></i></a>
+                                    @if (! in_array($loan->status, array(5,0)))
+                                      <a href="{{ route('layanan_keuangan-edit', $loan->id) }}" class="btn btn-xs btn-warning"><i class="bi bi-pencil"></i></a>
+                                    @endif
+                                    {{-- <a href="{{ route('layanan_keuangan-delete', $loan->id) }}" class="btn btn-xs btn-danger"><i class="bi bi-trash"></i></a> --}}
                                   </td>
                                 </tr>
                               @endforeach
