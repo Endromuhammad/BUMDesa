@@ -8,8 +8,10 @@ use App\Models\GoodsLoanDetails;
 use App\Models\MoneyLoan;
 use App\Models\News;
 use App\Models\Portfolio;
+use App\Models\Status;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Redirect;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -60,8 +62,14 @@ class LandingPageController extends Controller
         ]);
     }
 
-    public function moneyLoan () : View {
+    public function moneyLoan () : View {        
         return view('contents.money-loan');
+    }
+    
+    function moneyLoanList() {
+        $list = MoneyLoan::getUserTransactions();
+
+        return view('contents.money-loan-list', ['transactions' => $list]);
     }
 
     public function moneyLoanStore(Request $request) : RedirectResponse {
@@ -118,7 +126,8 @@ class LandingPageController extends Controller
             'ktp_path'          => $path_ktp,
             'holding_ktp_path'  => $path_ktp_holding,
             'kk_path'           => $path_kk,
-            'created_by'        => NULL
+            'created_by'        => Auth::id(),
+            'status'            => Status::getStatusSubmit()
         );
 
         $create = MoneyLoan::create($loanData);
@@ -127,7 +136,7 @@ class LandingPageController extends Controller
             echo "error create";exit;
         }
  
-        return redirect()->route('money-loan');
+        return redirect()->route('money-loan-list');
     }
 
     public function goodsLoan () : View {
