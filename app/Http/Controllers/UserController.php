@@ -53,6 +53,20 @@ class UserController extends Controller
             'password'          => ['required'],
             'confirm_password'  => ['required']
         ]);
+
+        if ($request->password != $request->confirm_password) {
+            return redirect(route('register'));
+        }
+
+        User::create([
+            'name'          => $request->name,
+            'phone_number'  => $request->phone_number,
+            'nik'           => $request->nik,
+            'password'      => Hash::make($request->password),
+            'role'          => 0
+        ]);
+
+        return redirect(route('user.login'));
     }
 
     public function logout(Request $request): RedirectResponse

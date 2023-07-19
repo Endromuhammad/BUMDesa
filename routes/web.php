@@ -159,10 +159,6 @@ Route::get('/logout', [AdminController::class, 'logout'])->name('logout');
 /** start basic user routes */
 Route::get('/user/login', [UserController::class, 'login'])->name('user.login');
 
-Route::get('/user/register', function () {
-    return view('register');
-})->name('user.register');
-
 Route::get('/forget', function () {
     return view('forget');
 })->name('forget');
