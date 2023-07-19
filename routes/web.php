@@ -183,5 +183,6 @@ Route::get('/money-loan-list', [LandingPageController::class, 'moneyLoanList'])-
 Route::post('/money-loan/store', [LandingPageController::class, 'moneyLoanStore'])->name('money-loan.post');
 
 Route::get('/goods-loan', [LandingPageController::class, 'goodsLoan'])->name('goods-loan');
+Route::get('/goods-loan-list', [LandingPageController::class, 'goodsLoanList'])->name('goods-loan-list');
 Route::post('/goods-loan/store', [LandingPageController::class, 'goodsLoanStore'])->name('goods-loan.post');
 /** end basic user routes */
