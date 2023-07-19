@@ -57,6 +57,22 @@
                                 <input class="form-control mt-2" type="file" id="formFile" name="kk" accept="image/*">
                             </div>
 
+                            <div class="mb-3">
+                                <label for="formFile" class="form-label">Update Status</label> <br />
+                                <select class="form-control" id="barang" name="status" required>
+                                    <option selected disabled value="">Pilih Status</option>
+                                    @if (in_array($loan->status, array(1)))
+                                        <option value="2">Approve</option>
+                                        <option value="3">Reject</option>
+                                    @elseif (in_array($loan->status, array(2)))
+                                        <option value="5">Done</option>
+                                        <option value="0">Cancel</option>
+                                    @elseif (in_array($loan->status, array(3)))
+                                        <option value="0">Cancel</option>
+                                    @endif
+                                </select>
+                            </div>
+
                             <input type="submit" class="btn btn-warning" value="Update">
                         </form>
                     </div>
